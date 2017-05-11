@@ -6,6 +6,8 @@ So, it won't suprise you that my first python data project is a Star Trek projec
 
 **Which one is the best Star Trek movie?** 
 
+![alt text](https://github.com/rikunert/Star_Trek_ratings/raw/master/Star_Trek_movie_ratings_dates.png "The final figure")
+
 ## Data acquisition: using IMDb API and web scraping
 
 Start off by loading all the necessary modules. Because of IMDb-py I use python 2.7. 
@@ -100,8 +102,10 @@ p = p + geom_line(aes(x='date', y='Tomato_user'), data=df, size=5, color='blue')
 p = p + ylim(0, 5) + xlim(1975, 2016) + xlab(' ') + ylab(' ') + ggtitle('Star Trek movie ratings')  # make axes pretty
 ```
 
-The plot `p` now hold essentially all the information we need. 
-But it is not pretty yet, as you can see by calling `print p`.
+![alt text](https://github.com/rikunert/Star_Trek_ratings/raw/master/Star_Trek_movie_ratings_dates_interim1.png "Interim figure")
+
+The plot `p` now holds essentially all the information we need. 
+But it is not pretty yet, as you can see by calling `print p` which is what I did to produce the figure above.
 For visual gimicks we shall leave `ggplot` and turn to `matplotlib`.
 
 The module `matplotlib` works very much like matlab figure production. 
@@ -119,6 +123,10 @@ plt.text(2017.5, 3.75, 'Rotten\nTomatoes\nusers', color='blue')  # keep figure o
 plt.text(2017.5, 3.4, 'IMDb users', color='orange')  # keep figure open for this to work
 plt.text(2017.5, 3.2, 'Metacritic', color='purple')  # keep figure open for this to work
 ```
+The result is already more intuitively understandable:
+
+![alt text](https://github.com/rikunert/Star_Trek_ratings/raw/master/Star_Trek_movie_ratings_dates_interim2.png "Interim figure")
+
 Next, I was looking for an intuitive way to explain which movie is where.
 The film posters are the easiest way to achieve this. 
 
@@ -149,6 +157,9 @@ Adding each film poster is now easy. For the ordinate (y-axis), by the way, I ch
 for i in range(len(df)):  # for each Star Trek movie
     add_image(ax, df['image_url'][i], [df['date'][i], sum(df.iloc[i, 1:5]) / 4.0], 0.3)
 ```
+
+![alt text](https://github.com/rikunert/Star_Trek_ratings/raw/master/Star_Trek_movie_ratings_dates_interim3.png "Interim figure")
+
 I think the x-axis could be simplified.
 ```python
 ax.xaxis.set_ticks(range(1980, 2020, 10))  # minimal x-axis style
@@ -161,11 +172,17 @@ for i in range(1, 6):  # for each star rating from 1 onwards
     for j in range(i):  # for each individual star
         add_image(ax, 'gold_star.jpg', [1975 + j * 0.7, i], 0.05)
 ```
-What stands out the most from the figure is just how aweful Star Trek V was. Let's highlight this.
+
+![alt text](https://github.com/rikunert/Star_Trek_ratings/raw/master/Star_Trek_movie_ratings_dates_interim4.png "Interim figure")
+
+What stands out the most from the figure is just how awful Star Trek V was. Let's highlight this.
 ```python
 ax.annotate('The absolute worst movie:\n' + df[df['IMDb_rating'] == min(df['IMDb_rating'])]['title'].iloc[0],
             xy=(1988, 1.5), xytext=(1978, 1), arrowprops=dict(facecolor='black', shrink=0.05))
 ```
+
+![alt text](https://github.com/rikunert/Star_Trek_ratings/raw/master/Star_Trek_movie_ratings_dates_interim5.png "Interim figure")
+
 Finally, the figure dimensions are not optimalised for social media like twitter. 
 And the margins are simply too big. The last statements deal with these problems 
 ```python
@@ -173,4 +190,4 @@ fig = plt.gcf()  # get current figure to show it
 fig.set_size_inches(1024 / 70, 512 / 70)  # reset the figure size to twitter standard
 fig.savefig('Star Trek movie ratings_dates.png', dpi=96, bbox_inches='tight')  # save figure
 ```
-![alt text](https://github.com/rikunert/Star_Trek_ratings/Star Trek movie ratings_dates.png "The final figure")
+![alt text](https://github.com/rikunert/Star_Trek_ratings/raw/master/Star_Trek_movie_ratings_dates.png "The final figure")
